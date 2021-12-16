@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .slide_item {
+            /* width: 20vw; */
+            height: 300px;
+            border: 1px solid blue;
+
+        }
+
+        .slides {
+            /* width: 100%; */
+            display: flex;
+        }
+
+        .container {
+            width: 350px;
+            margin: auto;
+            /* overflow: hidden; */
+            border: 2px solid red;
+
+        }
+
+        button {
+            width: 80px;
+            height: 60px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="slides">
+            <div class="slide_item slide_item_4" id="last_clone">
+                <img src="https://fakeimg.pl/350x300/?text=3333">
+            </div>
+            <div class="slide_item slide_item_1">
+                <img src="https://fakeimg.pl/350x300/?text=1">
+            </div>
+            <div class="slide_item slide_item_2">
+                <img src="https://fakeimg.pl/350x300/?text=2">
+            </div>
+            <div class="slide_item slide_item_3">
+                <img src="https://fakeimg.pl/350x300/?text=3">
+            </div>
+            <div class="slide_item slide_item_1" id="first_clone">
+                <img src="https://fakeimg.pl/350x300/?text=1111">
+            </div>
+        </div>
+    </div>
+    <button class="prev">prev</button>
+    <button class="next">next</button>
+    <script>
+        const carouselSlide = document.querySelector('.slides');
+        const carouselImages = document.querySelectorAll('.slide_item');
+        console.log('carouselImages', carouselImages);
+        const prev = document.querySelector('.prev');
+        const next = document.querySelector('.next');
+        let counter = 1;
+        let size = carouselImages[0].clientWidth;
+        carouselSlide.style.transform = 'translateX(' + (- size * counter) + 'px)';
+
+
+        next.addEventListener('click', () => {
+            console.log('counter', counter);
+            // 快速點擊增加counter時跳出
+            if (counter > carouselImages.length - 1) {
+                console.log('大於的counter', counter);
+                return
+            };
+            console.log('carouselImages.length', carouselImages.length);
+            counter++;
+
+            carouselSlide.style.transition = 'transform 0.4s ease-in-out'
+
+            carouselSlide.style.transform = 'translateX(' + (- size * counter) + 'px)';
+
+        })
+        prev.addEventListener('click', () => {
+            // 快速點擊減少counter時跳出
+            if (counter <= 0) { return };
+
+            carouselSlide.style.transition = 'transform 0.4s ease-in-out'
+            counter--;
+            carouselSlide.style.transform = 'translateX(' + (- size * counter) + 'px)';
+        })
+        carouselSlide.addEventListener('transitionend', () => {
+            console.log('後來的counter', counter);
+            console.log(carouselImages[counter]);
+            if (carouselImages[counter].id === 'last_clone') {
+                carouselSlide.style.transition = 'none';
+                counter = carouselImages.length - 2;
+                carouselSlide.style.transform = 'translateX(' + (- size * counter) + 'px)';
+            }
+            if (carouselImages[counter].id === 'first_clone') {
+                carouselSlide.style.transition = 'none';
+                counter = 1;
+                carouselSlide.style.transform = 'translateX(' + (- size * counter) + 'px)';
+            }
+
+        })
+
+    </script>
+
+</body>
+
+</html>
